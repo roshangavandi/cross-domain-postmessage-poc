@@ -83,7 +83,7 @@ sendTokenAndRedirect(): void {
     });
   };
 }
-
+ ```
 ## Domain 2: Storing the Token in `localStorage`
 
 This part of the project demonstrates how **Domain 2** listens for messages from **Domain 1** using the `window.postMessage()` API, stores the received JWT token in `localStorage`, and confirms back to **Domain 1** that the token has been stored.
@@ -119,4 +119,4 @@ export class AppComponent implements OnInit {
     });
   }
 }
-
+ ```
