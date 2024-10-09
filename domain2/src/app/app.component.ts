@@ -32,10 +32,28 @@ export class AppComponent implements OnInit {
           // Extract and store the JWT token from the message
           this.jwtToken = event.data;
           sessionStorage.setItem('jwtToken', event.data);
+          localStorage.setItem('jwtToken', event.data);
           console.log('JWT Token stored in sessionStorage:', this.jwtToken);
+        
         },
         false
       );
+    }
+    // Check if the JWT token exists in localStorage
+    this.getJwtToken();
+  }
+
+  // Method to get the JWT token from localStorage
+  getJwtToken(): void {
+    // Retrieve the token from localStorage
+    const token = localStorage.getItem('jwtToken');
+
+    // Check if token exists and is not null
+    if (token) {
+      this.jwtToken = token;  // Set the token in the component's variable
+      console.log('JWT Token found:', this.jwtToken);
+    } else {
+      console.log('No JWT Token found in localStorage');
     }
   }
 }

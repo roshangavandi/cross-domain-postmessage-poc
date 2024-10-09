@@ -5,6 +5,11 @@
 
   <!-- Login button triggers the login method to open Domain 2 and send the JWT -->
   <button (click)="login()">Login and Go to Domain 2</button>
+<br><br>
+
+<!-- Button triggers redirect to Domain 2 after token is stored -->
+<button (click)="sendTokenToDomain2()">Login (Ifream)Go to Domain 2</button>
 </div>
+<iframe id="domain2Iframe" src="http://localhost:4300" style="display:none;"></iframe>
 
 <router-outlet />
