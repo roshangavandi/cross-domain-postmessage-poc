@@ -1,0 +1,10 @@
+<div class="container">
+  <h1>{{ title }}</h1>
+  <p>Welcome to Domain 1!</p>
+  <p>Click the button below to log in and navigate to Domain 2.</p>
+
+  <!-- Login button triggers the login method to open Domain 2 and send the JWT -->
+  <button (click)="login()">Login and Go to Domain 2</button>
+</div>
+
+<router-outlet />

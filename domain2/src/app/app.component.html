@@ -1,0 +1,11 @@
+<div class="container">
+  <h1>{{ title }}</h1>
+  <p>Welcome to Domain 2!</p>
+
+  <!-- Display the received JWT token -->
+  <p NgIf="jwtToken">JWT Token: <label style="color:crimson"> {{ jwtToken }} </label></p>
+
+</div>
+
+
+<router-outlet />
