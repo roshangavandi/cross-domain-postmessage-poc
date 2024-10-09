@@ -83,3 +83,40 @@ sendTokenAndRedirect(): void {
     });
   };
 }
+
+## Domain 2: Storing the Token in `localStorage`
+
+This part of the project demonstrates how **Domain 2** listens for messages from **Domain 1** using the `window.postMessage()` API, stores the received JWT token in `localStorage`, and confirms back to **Domain 1** that the token has been stored.
+
+### Code Implementation
+
+#### `app.component.ts`
+
+```typescript
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent implements OnInit {
+  jwtToken: string | null = null;
+
+  ngOnInit(): void {
+    // Listen for postMessage from Domain 1
+    window.addEventListener('message', (event) => {
+      if (event.origin === 'http://localhost:4200') {
+        const token = event.data;
+        
+        // Store the received token in localStorage
+        localStorage.setItem('jwtToken', token);
+        console.log('JWT Token stored in localStorage:', token);
+
+        // Notify Domain 1 that the token has been successfully stored
+        event.source?.postMessage('token-stored', event.origin);
+      }
+    });
+  }
+}
+
