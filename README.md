@@ -83,6 +83,7 @@ sendTokenAndRedirect(): void {
     });
   };
 }
+ ```
 
 ## Domain 2: Storing the Token in `localStorage`
 
@@ -119,4 +120,4 @@ export class AppComponent implements OnInit {
     });
   }
 }
-
+ ```
