@@ -62,14 +62,59 @@ Run the application:
 
 ng serve --port 4300
 Access Domain 2 at http://localhost:4300.
+Domain 2 will be loaded in an iframe within Domain 1 at http://localhost:4200.
 
-Communication Flow
-Domain 1 opens Domain 2 in a new tab and simulates sending a JWT token after a simulated login process.
-Domain 2 listens for the postMessage() event and retrieves the JWT token sent by Domain 1.
-The JWT token is displayed on the UI in Domain 2, or a waiting message is shown until the token is received.
-Usage
-To trigger communication:
-
+New Flow: iframe Integration and Token Storage
+Domain 1 sends a JWT token to Domain 2 embedded in an iframe using the window.postMessage() API.
+Domain 2 listens for the token, stores it in localStorage, and confirms the token has been stored by sending a message back to Domain 1.
+Once the token is stored in Domain 2, Domain 1 can redirect to Domain 2 in the same tab.
+Usage Instructions
 Navigate to Domain 1 (http://localhost:4200).
-Click the "Login and Go to Domain 2" button.
-Domain 2 (http://localhost:4300) will display the JWT token sent from Domain 1.
+Click the "Send Token and Go to Domain 2" button.
+Domain 2 will receive the token and store it in localStorage. Once stored, you will be redirected to Domain 2 in the same tab.
+Example Code
+Domain 1: Sending Token via postMessage()
+
+sendTokenAndRedirect(): void {
+  const jwtToken = 'yourJWTTokenHere';
+
+  const iframeElement = document.getElementById('domain2Iframe') as HTMLIFrameElement;
+  iframeElement.onload = () => {
+    iframeElement.contentWindow?.postMessage(jwtToken, 'http://localhost:4300');
+
+    window.addEventListener('message', (event) => {
+      if (event.origin === 'http://localhost:4300' && event.data === 'token-stored') {
+        window.location.href = 'http://localhost:4300';
+      }
+    });
+  };
+}
+Domain 2: Storing the Token in localStorage
+
+window.addEventListener('message', (event) => {
+  if (event.origin === 'http://localhost:4200') {
+    const token = event.data;
+    localStorage.setItem('jwtToken', token);
+    event.source?.postMessage('token-stored', event.origin);
+  }
+});
+
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+---
+
+### Changes made to the README:
+1. **Updated Flow**: Explained the new iframe integration and how **Domain 1** sends a JWT token to **Domain 2** within the iframe.
+2. **Code Example**: Provided examples of how **Domain 1** sends the token and how **Domain 2** stores it in `localStorage`.
+3. **Usage Section**: Added a step-by-step guide on using the updated iframe integration.
+4. **Screenshots (Optional)**: You can update the paths to screenshots that reflect the iframe change.
+
+Once this `README.md` file is ready, you can add it to your repository and push it as part of the next commit.
+
+### Command to commit the updated README:
+
+```bash
+git add README.md
+git commit -m "Updated README with iframe implementation and JWT token storage details"
+git push
